@@ -1,0 +1,80 @@
+.CustomCarousel {
+  display: flex;
+  width: 100%;
+  position: relative;
+  background-color: #414d53;
+  height: auto;
+}
+.CustomCarousel-inner {
+  float: left;
+  padding-bottom: 5px;
+  min-height: 150px;
+  min-width: 80%;
+  margin: auto;
+}
+
+.CustomCarousel-header {
+  margin: 0;
+  padding-bottom: 2px;
+  padding-left: 5px;
+  background-color: #414d53;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: x-large;
+  color: white;
+  width: 100%;
+}
+.CustomCarousel-inner .item {
+  float: left;
+  text-align: center;
+}
+.CustomCarousel-inner .item > * {
+  margin: auto;
+}
+.CustomCarousel-inner .Poster {
+  max-width: 100%;
+  max-height: 320px;
+}
+.btn-prev,
+.btn-next {
+  background-color: rgba(0, 0, 0, 0);
+  outline-color: rgba(0, 0, 0, 0);
+  color: white;
+  position: absolute;
+  height: 100%;
+  width: 50px;
+  font-weight: bold;
+  font-size: 2em;
+  border: none;
+  cursor: pointer;
+  overflow-x: hidden;
+}
+.btn-prev:focus,
+.btn-next:focus {
+  outline-color: rgba(0, 0, 0, 0);
+}
+.btn-prev:hover,
+.btn-next:hover {
+  font-size: 4em;
+}
+.CustomCarousel .btn-prev {
+  left: 0;
+  background: linear-gradient(
+    -90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+}
+.CustomCarousel .btn-next {
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+}
+
+.btn-prev.over,
+.btn-next.over {
+  pointer-events: none;
+  visibility: hidden;
+}

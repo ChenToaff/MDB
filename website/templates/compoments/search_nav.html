@@ -1,0 +1,65 @@
+<style>
+  .Close {
+    color: #818181;
+    text-decoration: none;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    font-size: 35px;
+    margin-top: -5px;
+  }
+  .Close:hover {
+    color: #f1f1f1;
+    text-decoration: none;
+  }
+</style>
+<nav
+  class="navbar-dark fixed-top bg-dark d-sm-none"
+  style="
+    z-index: 99;
+    height: 60px;
+    padding: 7px;
+    vertical-align: auto;
+    display: none;
+  "
+  id="SearchNav"
+>
+  <div style="width: 7%; flex-shrink: 0;"></div>
+  <div
+    name="second"
+    style="flex-grow: 1; text-align: center; padding-top: 4px;"
+  >
+    <input
+      onchange="searchMovies(this.value);this.value='';closeSearch();"
+      class="form-control"
+      style="width: 100%; margin: auto;"
+      type="text"
+      placeholder="Search"
+      aria-label="Search"
+      id="searchBox"
+    />
+  </div>
+  <div
+    style="
+      height: 100%;
+
+      width: 7%;
+      flex-shrink: 0;
+    "
+  >
+    <a class="Close btn" href="javascript:void(0)" onclick="closeSearch()"
+      >&times;</a
+    >
+  </div>
+</nav>
+
+<script>
+  function openSearch() {
+    document.getElementById("SearchNav").style.display = "flex";
+    document.getElementById("searchBox").focus();
+  }
+
+  function closeSearch() {
+    document.getElementById("SearchNav").style.display = "none";
+  }
+</script>

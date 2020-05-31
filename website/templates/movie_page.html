@@ -1,0 +1,74 @@
+{% extends "base.html" %} {% block head %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{{ url_for('static', filename='js/Movies.js') }}"></script>
+
+<style>
+  html,
+  body {
+    height: 100%;
+  }
+  main {
+    height: calc(100% - 60px);
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #818181;
+    font-family: "Lato", sans-serif;
+    font-size: 22px;
+    overflow-wrap: break-word;
+    z-index: 100;
+    overflow-x: hidden;
+  }
+  .MoviePage-header {
+    padding: 10px;
+    padding-bottom: 5px;
+    margin: 0;
+  }
+  .MoviePage-like {
+    padding-bottom: 5px;
+    margin: 0;
+  }
+  .MoviePage-like > * {
+    width: 40px;
+    height: 40px;
+    margin: auto;
+    cursor: pointer;
+  }
+  .MoviePage-body {
+    padding-bottom: 3px;
+  }
+</style>
+<script>
+  window.onpopstate = function (e) {
+    location.reload(true);
+  };
+</script>
+{% endblock %} {%block body %}{% include "compoments/navbar.html" %}
+
+<main>
+  <div class="MoviePage-header row w-100">
+    <h1 class="text-center m-auto">{{Title}}</h1>
+  </div>
+  <div class="MoviePage-like row w-100">
+    <img
+      id="likeImage"
+      src="{{ url_for('static', filename='images/'+ ('after_like.png' if Liked else 'before_like.png'))}}"
+      onclick="likeBtn(this)"
+    />
+  </div>
+  <div class="MoviePage-body row d-flex justify-content-center">
+    <div
+      class="text-center d-lg-block col-12 col-sm-4 col-lg-4 col-xl-3 w-100 h-100 text-lg-right"
+    >
+      <img style="max-height: 100%; max-width: 100%;" src="{{Poster}}" />
+    </div>
+    <div
+      class="col-10 col-sm-7 col-lg-8 col-xl-9 w-100 h-100 p-3 text-center text-lg-left"
+    >
+      {{Plot}}
+    </div>
+  </div>
+</main>
+
+{% endblock %}

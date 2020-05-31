@@ -1,0 +1,54 @@
+{% extends "base.html" %} {%block header %} {% include "compoments/banner.html"
+%}{% endblock %} {%block head%}
+<!-- Custom styles for this template -->
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static', filename='css/signin.css') }}"
+/>
+{% endblock%} {%block body %}
+
+<form class="form-signin text-center needs-validation"" method="POST" action="/login">
+  <img
+    class="mb-4"
+    src="{{ url_for('static', filename='images/logo-mdb.png') }}"
+    alt=""
+    width="72"
+    height="72"
+  />
+  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+  <label for="form_email" class="sr-only">Email address</label>
+  <input
+    type="email"
+    name="form_email"
+    class="form-control"
+    placeholder="Email"
+    required
+    autofocus
+  />
+  <label for="form_password" class="sr-only control-group error">Password</label>
+  <input
+    type="password"
+    name="form_password"
+    class="form-control"
+    placeholder="Password"
+    required
+    pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+  ><div class="invalid-feedback" style="width: 100%;">
+                  Your username is required.
+                </div></input>
+  <div class="checkbox mb-3">
+    <label>
+      <input name="form_remember" type="checkbox" />
+      Remember me
+    </label>
+  </div>
+  <button class="btn btn-lg btn-dark btn-block" type="submit">
+    Sign in
+  </button>
+  <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+  <a href="/forgot" class="float-left text-secondary">Forgot Password?</a
+  ><a href="/signup" class="float-right text-secondary">New to MDB?</a>
+</form>
+
+{% endblock %}

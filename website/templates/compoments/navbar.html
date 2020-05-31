@@ -1,0 +1,130 @@
+<nav
+  class="navbar-dark bg-dark"
+  style="
+    z-index: 98;
+    height: 60px;
+    padding: 7px;
+    vertical-align: auto;
+    display: flex;
+  "
+>
+  <div name="first" style="flex-shrink: 0;">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a href="/">
+      <img
+        src="{{ url_for('static', filename='images/logo-mdb.png') }}"
+        alt=""
+        style="height: 45px;"
+    /></a>
+  </div>
+  <div
+    name="second"
+    style="flex-grow: 1; text-align: center; padding-top: 4px;"
+  >
+    <input
+      onchange="searchMovies(this.value);this.value='';this.blur()"
+      class="form-control d-none d-sm-block"
+      style="width: 80%; margin: auto;"
+      type="text"
+      placeholder="Search"
+      aria-label="Search"
+      name="searchBox"
+    />
+    <button
+      class="btn btn-dark d-block d-sm-none"
+      id="searchBtn"
+      style="margin: auto; padding: 5px; height: 45px; width: 45px;"
+      onclick="this.blur();openSearch();"
+    >
+      <img
+        src="{{ url_for('static', filename='images/search.png') }}"
+        style="max-width: 100%;"
+      />
+    </button>
+  </div>
+  <div class="btn-group">
+    <button class="btn btn-dark btn-sm" type="button">
+      <img
+        style="width: 30px; height: 30px; padding-bottom: 4px;"
+        alt="Logout"
+        src="{{ url_for('static', filename='images/profile.png') }}"
+      />
+      Profile
+    </button>
+    <button
+      type="button"
+      class="btn btn-lg btn-dark dropdown-toggle dropdown-toggle-split"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right bg-dark">
+      <a class="dropdown-item text-white" href="/logout">
+        <img
+          style="width: 30px; height: 30px; padding-bottom: 4px;"
+          alt="Logout"
+          src="{{ url_for('static', filename='images/logout.png') }}"
+        />
+        Logout
+      </a>
+    </div>
+  </div>
+</nav>
+<script>
+  function searchMovies(name) {
+    const main = $("main");
+    main.addClass("bg-dark");
+    main.html("");
+    let card = $("<div/>", {
+      style: "max-width: 700px;margin:auto;margin-bottom:4px",
+      class: "card text-dark bg-light",
+    });
+    let cardBody = $("<div/>", { class: "card-body" });
+    cardBody.html("<h5><b>Results For: </b>" + name + "</h5>");
+    cardBody.appendTo(card);
+    card.appendTo(main);
+
+    axios.get("/movies/search/" + name).then((response) => {
+      let d = response.data;
+      if (d) {
+        for (let i = 0; i < d.length; i++) {
+          card = $("<div/>", {
+            style: "max-width: 700px;margin:auto;margin-bottom:2px",
+            class: "card text-dark bg-light",
+            onclick: "getPlot('" + d[i].imdbID + "');",
+          });
+          cardBody = $("<div/>", { class: "card-body" });
+          $("<img/>", {
+            style: "height: 150px; width: 100px; float: right;",
+            src: d[i].Poster,
+          }).appendTo(cardBody);
+          let content = $("<div/>");
+          $("<h5/>", {
+            class: "card-title",
+            text: d[i].Title + " (" + d[i].Year + ")",
+          }).appendTo(content);
+          $("<p/>", {
+            class: "card-text",
+            text: d[i].Plot,
+          }).appendTo(content);
+          content.appendTo(cardBody);
+          cardBody.appendTo(card);
+          card.appendTo(main);
+        }
+      }
+    });
+  }
+</script>
+{% include "compoments/search_nav.html" %}
