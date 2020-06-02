@@ -24,12 +24,13 @@ def movie_data(token):
         movie["Liked"] = 1 if movie["imdbID"] in dict(mongo.db.users.find_one({"email":current_user.email},{"movies":1}))["movies"].keys() else 0
         return render_template("movie_page.html",Plot = movie['Plot'],Title = movie["Title"] +" ("+movie["Year"]+")" ,Poster = movie["Poster"],Liked = movie["Liked"]) 
 
-
-
-@app.route('/movies/search/<token>')
+@app.route('/search/<token>')
 @login_required
 def movies_search(token):
-    return get_movies(token)
+    users = list(mongo.db.users.find({},{"_id":0,"email":1,"name":1}))
+    users_match = list(filter(lambda item: token.lower() in item["name"].lower() or token in item["email"].lower(),users))
+    movies_match =  get_movies(token)
+    return jsonify(Movies = movies_match,Users = users_match)
 
 @app.route('/movies/new')
 @login_required
@@ -39,11 +40,18 @@ def movies_new():
 
     return jsonify(json.dumps(movie))
 
-@app.route('/movies/liked')
+@app.route("/user/liked/", defaults={"token": None})
+@app.route("/user/liked/<token>")
 @login_required
-def movies_liked():
-    movie_list = mongo.db.users.find_one({"email":current_user.email},{"_id":0,"movies":1})["movies"].values()
-    movie_list =  sorted(movie_list,key = lambda x: (int(x["Year"].split("–")[0]),float(x["imdbRating"])),reverse=True)
+def user_liked(token):
+    print("token:", token)
+    if not token:
+        token = current_user.email 
+    movie_list = mongo.db.users.find_one({"email":token},{"_id":0,"movies":1})
+    if movie_list:
+        movie_list = movie_list["movies"].values()
+        movie_list =  sorted(movie_list,key = lambda x: (int(x["Year"].split("–")[0]),float(x["imdbRating"])),reverse=True)
+
     return jsonify(json.dumps(movie_list))
 
 @app.route('/movies/like/<token>')
