@@ -1,6 +1,6 @@
 from .app import app,mongo
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask import url_for,render_template, request, redirect, session, flash, make_response
+from flask import url_for,render_template, request, redirect, session, flash, make_response,abort
 from .models import hash_password ,User
 from .emails import send_confirmation, send_password_change, confirm_token
 import ast
@@ -144,6 +144,25 @@ def logout():
     logout_user()
     flash('You logged out successfully.',category="primary")
     return redirect("/")
+
+
+@app.route("/profile/", defaults={"token": None})
+@app.route('/profile/<token>')
+@login_required
+def profile(token):
+    if token == current_user.email:
+        return redirect("/profile/")
+    if not token:
+        token = current_user.email
+    user = users.find_one({"email": token})
+    if user:
+        user = User(user)
+        return render_template("users_page.html",UserName = user.name,Image = "profile.png")
+    else:
+        return redirect("/")
+
+    
+    
 
 
 

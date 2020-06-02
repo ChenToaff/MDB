@@ -24,8 +24,6 @@ class User(UserMixin):
         self.confirmed = user['confirmed']
     
 
-
-
 def get_movie(imdbId):
     url = "http://www.omdbapi.com/?apikey="+ apiKey+"&i=" +imdbId+ "&plot=full"
     try:
@@ -35,12 +33,13 @@ def get_movie(imdbId):
         return ""
 
 def get_movies(name):
-    url = "http://www.omdbapi.com/?apikey="+ apiKey+"&i=" +name.replace(" ", "%20")+"&type=movie"
+    url = "http://www.omdbapi.com/?apikey="+ apiKey+"&s=" +name.replace(" ", "%20")+"&type=movie"
     try:
         data = requests.get(url).json()
-        return json.dumps(sorted(data["Search"],key = lambda x: (int(x["Year"].split("–")[0])),reverse=True))
+        data = list({item['imdbID'] : item for item in data["Search"]}.values())
+        return sorted(data,key = lambda x: (int(x["Year"].split("–")[0])),reverse=True)
     except Exception as e:
         print(e)
-        return ""
+        return []
 
 

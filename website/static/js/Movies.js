@@ -22,22 +22,28 @@ function fill_carousale(inner, data) {
 }
 const userMovies = [];
 function onLoad() {
-  axios.get("/movies/new").then((response) => {
-    let d = response.data;
-    if (d) {
-      const inner = $("#topMoviesCaro").find(".CustomCarousel-inner");
-      const data = JSON.parse(d);
-      fill_carousale(inner, data);
-    }
-  });
-  axios.get("/movies/liked").then((response) => {
-    let d = response.data;
-    if (d) {
-      const inner = $("#likedMoviesCaro").find(".CustomCarousel-inner");
-      const data = JSON.parse(d);
-      fill_carousale(inner, data);
-    }
-  });
+  if ($("#topMoviesCaro").length) {
+    axios.get("/movies/new").then((response) => {
+      let d = response.data;
+      if (d) {
+        const inner = $("#topMoviesCaro").find(".CustomCarousel-inner");
+        const data = JSON.parse(d);
+        fill_carousale(inner, data);
+      }
+    });
+  }
+  if ($("#likedMoviesCaro").length) {
+    axios
+      .get("/user/liked/" + window.location.pathname.split("/").pop())
+      .then((response) => {
+        let d = response.data;
+        if (d) {
+          const inner = $("#likedMoviesCaro").find(".CustomCarousel-inner");
+          const data = JSON.parse(d);
+          fill_carousale(inner, data);
+        }
+      });
+  }
 }
 async function getPlot(imdbID) {
   $("#overlayPoster").attr("src", "static/images/preloader3.gif");

@@ -80,13 +80,17 @@
 </div>
 <script>
   function openOverlay(imdbID) {
-    window.history.pushState(null, "", "/movie/" + imdbID);
+    window.history.pushState(
+      { prev: window.location.pathname },
+      "",
+      "/movie/" + imdbID
+    );
     document.getElementById("movieOverlay").style.width = "100%";
     $("html,main, body").css("overflow", "hidden");
   }
 
   function closeOverlay() {
-    window.history.pushState(null, "", "/");
+    window.history.pushState(null, "", window.history.state.prev);
     //window.history.back();
     //window.dispatchEvent(new PopStateEvent("popstate", {}));
     //window.history.replaceState(null, "", "/");

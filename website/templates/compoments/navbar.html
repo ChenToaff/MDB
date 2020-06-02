@@ -32,7 +32,7 @@
     style="flex-grow: 1; text-align: center; padding-top: 4px;"
   >
     <input
-      onchange="searchMovies(this.value);this.value='';this.blur()"
+      onchange="search(this.value);this.value='';this.blur()"
       class="form-control d-none d-sm-block"
       style="width: 80%; margin: auto;"
       type="text"
@@ -53,14 +53,19 @@
     </button>
   </div>
   <div class="btn-group">
-    <button class="btn btn-dark btn-sm" type="button">
+    <a
+      class="btn btn-dark btn-sm"
+      style="padding-top: 9px;"
+      href="/profile/"
+      type="button"
+    >
       <img
-        style="width: 30px; height: 30px; padding-bottom: 4px;"
+        style="width: 30px; height: 30px; margin-top: -4px;"
         alt="Logout"
         src="{{ url_for('static', filename='images/profile.png') }}"
       />
       Profile
-    </button>
+    </a>
     <button
       type="button"
       class="btn btn-lg btn-dark dropdown-toggle dropdown-toggle-split"
@@ -73,7 +78,7 @@
     <div class="dropdown-menu dropdown-menu-right bg-dark">
       <a class="dropdown-item text-white" href="/logout">
         <img
-          style="width: 30px; height: 30px; padding-bottom: 4px;"
+          style="width: 30px; height: 30px; margin-top: -4px;"
           alt="Logout"
           src="{{ url_for('static', filename='images/logout.png') }}"
         />
@@ -82,49 +87,66 @@
     </div>
   </div>
 </nav>
+<style>
+  .search-card {
+    max-width: 700px;
+    margin: auto;
+    margin-bottom: 2px;
+    color: #343a40;
+    background-color: #f8f9fa;
+  }
+</style>
 <script>
-  function searchMovies(name) {
+  function search(name) {
     const main = $("main");
-    main.addClass("bg-dark");
     main.html("");
-    let card = $("<div/>", {
-      style: "max-width: 700px;margin:auto;margin-bottom:4px",
-      class: "card text-dark bg-light",
-    });
-    let cardBody = $("<div/>", { class: "card-body" });
-    cardBody.html("<h5><b>Results For: </b>" + name + "</h5>");
-    cardBody.appendTo(card);
-    card.appendTo(main);
-
-    axios.get("/movies/search/" + name).then((response) => {
+    axios.get("/search/" + name).then((response) => {
       let d = response.data;
-      if (d) {
-        for (let i = 0; i < d.length; i++) {
-          card = $("<div/>", {
-            style: "max-width: 700px;margin:auto;margin-bottom:2px",
-            class: "card text-dark bg-light",
-            onclick: "getPlot('" + d[i].imdbID + "');",
-          });
-          cardBody = $("<div/>", { class: "card-body" });
-          $("<img/>", {
-            style: "height: 150px; width: 100px; float: right;",
-            src: d[i].Poster,
-          }).appendTo(cardBody);
-          let content = $("<div/>");
-          $("<h5/>", {
-            class: "card-title",
-            text: d[i].Title + " (" + d[i].Year + ")",
-          }).appendTo(content);
-          $("<p/>", {
-            class: "card-text",
-            text: d[i].Plot,
-          }).appendTo(content);
-          content.appendTo(cardBody);
-          cardBody.appendTo(card);
-          card.appendTo(main);
-        }
+      head_card(name, d.Users.length + d.Movies.length).appendTo(main);
+      for (let i = 0; i < d.Users.length; i++) {
+        user_card(d.Users[i]).appendTo(main);
+      }
+      for (let i = 0; i < d.Movies.length; i++) {
+        movie_card(d.Movies[i]).appendTo(main);
       }
     });
+  }
+  function head_card(value, num) {
+    const card = $("<div/>", {
+      style: "margin-bottom:4px",
+      class: "card search-card",
+    });
+    const cardBody = $("<div/>", { class: "card-body" });
+    cardBody.html("<h5><b>" + num + " Results For: </b>" + value + "</h5>");
+    cardBody.appendTo(card);
+    return card;
+  }
+  function user_card(data) {
+    const card = $("<div/>", {
+      class: "card search-card",
+      onclick: "window.location= '/profile/" + data.email + "'",
+    });
+    const cardBody = $("<div/>", { class: "card-body" });
+    cardBody.append("<div><h5 class: 'card-title'>" + data.name + "</h5>");
+    cardBody.append("<p  class: 'card-text'> " + data.email + "</p></div>");
+    cardBody.appendTo(card);
+    return card;
+  }
+  function movie_card(data) {
+    const card = $("<div/>", {
+      class: "card search-card",
+      onclick: "getPlot('" + data.imdbID + "');",
+    });
+    const cardBody = $("<div/>", { class: "card-body" });
+    $("<img/>", {
+      style: "height: 150px; width: 100px; float: right;",
+      src: data.Poster,
+    }).appendTo(cardBody);
+    cardBody.append(
+      "<div><h5 class: 'card-title'>" + data.Title + " (" + data.Year + ")</h5>"
+    );
+    cardBody.appendTo(card);
+    return card;
   }
 </script>
 {% include "compoments/search_nav.html" %}
