@@ -15,8 +15,8 @@
 - Responsive login, signup and forgot password pages.
 - Custom built Carousle (<a>/CustomCarusel/</a>)
 
+<img src="readme files/mobile.png"> <img src="readme files/mobile2.png">
 <img src="readme files/home.png">
-<img src="readme files/mobile.png">
 <img src="readme files/movie_page.png">
 <img src="readme files/search_page.png">
 <img src="readme files/user_page.png">
