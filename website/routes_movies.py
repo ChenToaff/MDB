@@ -44,14 +44,12 @@ def movies_new():
 @app.route("/user/liked/<token>")
 @login_required
 def user_liked(token):
-    print("token:", token)
     if not token:
         token = current_user.email 
     movie_list = mongo.db.users.find_one({"email":token},{"_id":0,"movies":1})
     if movie_list:
         movie_list = movie_list["movies"].values()
         movie_list =  sorted(movie_list,key = lambda x: (int(x["Year"].split("–")[0]),float(x["imdbRating"])),reverse=True)
-
     return jsonify(json.dumps(movie_list))
 
 @app.route('/movies/like/<token>')

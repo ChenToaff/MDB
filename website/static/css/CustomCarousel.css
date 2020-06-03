@@ -3,7 +3,6 @@
   width: 100%;
   position: relative;
   background-color: #414d53;
-  height: auto;
 }
 .CustomCarousel-inner {
   float: left;
@@ -44,13 +43,15 @@
   width: 50px;
   font-weight: bold;
   font-size: 2em;
+  outline: none;
   border: none;
   cursor: pointer;
   overflow-x: hidden;
 }
 .btn-prev:focus,
 .btn-next:focus {
-  outline-color: rgba(0, 0, 0, 0);
+  outline: none;
+  border: none;
 }
 .btn-prev:hover,
 .btn-next:hover {

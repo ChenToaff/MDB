@@ -33,16 +33,17 @@ function onLoad() {
     });
   }
   if ($("#likedMoviesCaro").length) {
-    axios
-      .get("/user/liked/" + window.location.pathname.split("/").pop())
-      .then((response) => {
-        let d = response.data;
-        if (d) {
-          const inner = $("#likedMoviesCaro").find(".CustomCarousel-inner");
-          const data = JSON.parse(d);
-          fill_carousale(inner, data);
-        }
-      });
+    let add = window.location.pathname.split("/");
+    if (add[1] == "profile") add = add.pop();
+    else add = "";
+    axios.get("/user/liked/" + add).then((response) => {
+      let d = response.data;
+      if (d) {
+        const inner = $("#likedMoviesCaro").find(".CustomCarousel-inner");
+        const data = JSON.parse(d);
+        fill_carousale(inner, data);
+      }
+    });
   }
 }
 async function getPlot(imdbID) {
