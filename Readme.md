@@ -1,6 +1,6 @@
 # OMB - Online Movie Database
 
-### A social network/movie database for liking movies.
+### A social network for liking movies/movie database.
 
 <img src="readme files/home.png">
 <img src="readme files/movie_page.png">
