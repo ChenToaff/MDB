@@ -15,6 +15,13 @@
 - Responsive login, signup and forgot password pages.
 - Custom built <a href= "/CustomCarusel/">Carousle</a>
 
+### Usage:
+
+```python
+pip install -r requirements.txt
+python run.py
+```
+
 <img src="readme files/mobile.png"> <img src="readme files/mobile2.png">
 <img src="readme files/home.png">
 <img src="readme files/movie_page.png">
